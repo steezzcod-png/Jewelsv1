@@ -478,6 +478,7 @@ MachoInjectResource(CheckResource("monitor") and "monitor" or CheckResource("oxm
     local aXfPlMnQwErTyUi = false -- Godmode
     local sRtYuIoPaSdFgHj = false -- Invisibility
     local mKjHgFdSaPlMnBv = false -- No Ragdoll
+    local uNtArGeTaBlE = false -- Bubble
     local uYtReWqAzXcVbNm = false -- Infinite Stamina
     local peqCrVzHDwfkraYZ = false -- Shrink Ped
     local NpYgTbUcXsRoVm = false -- No Clip
@@ -679,6 +680,83 @@ end, function()
         end
 
         tBKM4syGJL()
+    ]])
+end)
+
+MachoMenuCheckbox(PlayerTabSections[1], "Bubble", function()
+    MachoInjectResource(
+        CheckResource("monitor") and "monitor"
+        or CheckResource("oxmysql") and "oxmysql"
+        or "any",
+    [[
+        if uNtArGeTaBlE == nil then
+            uNtArGeTaBlE = false
+        end
+
+        uNtArGeTaBlE = true
+
+        CreateThread(function()
+            while untargetable and not Unloaded do
+                local ped = PlayerPedId()
+                local player = PlayerId()
+
+                -- Friendly-fire style protection
+                SetPedCanBeTargetted(ped, false)
+                SetEveryoneIgnorePlayer(player, true)
+                SetPoliceIgnorePlayer(player, true)
+
+                -- Same-team relationship
+                SetRelationshipBetweenGroups(1, GetHashKey("PLAYER"), GetHashKey("PLAYER"))
+
+                -- Bullet / melee / explosion proof
+                SetEntityCanBeDamaged(ped, false)
+                SetEntityInvincible(ped, true)
+                SetEntityProofs(
+                    ped,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                )
+
+                Wait(0)
+            end
+        end)
+    ]])
+end, function()
+    MachoInjectResource(
+        CheckResource("monitor") and "monitor"
+        or CheckResource("oxmysql") and "oxmysql"
+        or "any",
+    [[
+        uNtArGeTaBlE = false
+
+        local ped = PlayerPedId()
+        local player = PlayerId()
+
+        SetPedCanBeTargetted(ped, true)
+        SetEveryoneIgnorePlayer(player, false)
+        SetPoliceIgnorePlayer(player, false)
+
+        SetRelationshipBetweenGroups(5, GetHashKey("PLAYER"), GetHashKey("PLAYER"))
+
+        SetEntityCanBeDamaged(ped, true)
+        SetEntityInvincible(ped, false)
+        SetEntityProofs(
+            ped,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        )
     ]])
 end)
 
